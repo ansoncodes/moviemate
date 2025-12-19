@@ -45,18 +45,11 @@ class MediaCreateSerializer(serializers.ModelSerializer):
     
 
 class MediaListSerializer(serializers.ModelSerializer):
-    genres=serializers.SerializerMethodField()
+    genres = GenreSerializer(many=True, read_only=True, source="genres")
 
     class Meta:
         model = Media
         fields = ["id", "title", "media_type", "platform", "status", "rating", "genres"]
-
-    def get_genres(self, obj):
-        return[
-            mg.genre.name
-            for mg in obj.media_genres.select_related("genre")
-        ]
-
 
 class SeasonCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -116,19 +109,13 @@ class TVShowDetailSerializer(serializers.ModelSerializer):
 
 
 class MediaDetailSerializer(serializers.ModelSerializer):
-    genres = serializers.SerializerMethodField()
+    genres = GenreSerializer(many=True, read_only=True, source="genres")
     tv_details = TVShowDetailSerializer(read_only =True)
 
     class Meta:
         model = Media
         fields = ["id", "title", "media_type", "director", "platform", "status", "rating", "review", "completed_at", "genres", "tv_details",]
 
-    def get_genres(self, obj):
-        return [
-            mg.genre.name
-            for mg in obj.media_genres.select_related("genre")
-        ]
-    
 class MediaUpdateSerializer(serializers.ModelSerializer):
     genre_ids = serializers.ListField(
         child = serializers.IntegerField(),
