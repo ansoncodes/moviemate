@@ -97,18 +97,14 @@ class SeasonProgressSerializer(serializers.ModelSerializer):
 class SeasonReadSerializer(serializers.ModelSerializer):
     episodes_watched = serializers.IntegerField(
         source="season_progress.episodes_watched",
-        default=0
+        default=0,
+        read_only = True
     )
 
     class Meta:
         model = Season
         fields = ["id", "season_number", "total_episodes", "episodes_watched"]
 
-    def get_episodes_watched(self, obj):
-        try:
-            return obj.season_progress.episodes_watched
-        except SeasonProgress.DoesNotExist:
-            return 0
 
 
 class TVShowDetailSerializer(serializers.ModelSerializer):
