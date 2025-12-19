@@ -45,7 +45,7 @@ class MediaCreateSerializer(serializers.ModelSerializer):
     
 
 class MediaListSerializer(serializers.ModelSerializer):
-    genres = GenreSerializer(many=True, read_only=True, source="genres")
+    genres = GenreSerializer(many=True, read_only=True)
 
     class Meta:
         model = Media
@@ -109,7 +109,7 @@ class TVShowDetailSerializer(serializers.ModelSerializer):
 
 
 class MediaDetailSerializer(serializers.ModelSerializer):
-    genres = GenreSerializer(many=True, read_only=True, source="genres")
+    genres = GenreSerializer(many=True, read_only=True)
     tv_details = TVShowDetailSerializer(read_only =True)
 
     class Meta:
