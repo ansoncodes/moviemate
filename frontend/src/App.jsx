@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import AddMedia from "./pages/AddMedia";
+import Movies from "./pages/Movies"
 import "./App.css";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-media" element={<AddMedia />} />
+          <Route path="/movies" element={<Movies/>} />
         </Routes>
       </main>
     </div>
