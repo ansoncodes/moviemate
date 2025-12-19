@@ -8,6 +8,12 @@ class Media(models.Model):
     movie = "movie"
     tv_show = "tv_show"
 
+    genres = models.ManyToManyField(
+        "Genre",
+        through="MediaGenre",
+        related_name="media"
+    )
+
     media_type_choices = [
         (movie, "Movie"),
         (tv_show, "TV Show"),
