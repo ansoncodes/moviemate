@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import AddMedia from "./pages/AddMedia";
 import Movies from "./pages/Movies"
+import TVShows from "./pages/TVShows";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-media" element={<AddMedia />} />
           <Route path="/movies" element={<Movies/>} />
+          <Route path="/tvshows" element={<TVShows/>} />
         </Routes>
       </main>
     </div>
