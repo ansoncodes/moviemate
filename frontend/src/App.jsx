@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import AddMedia from "./pages/AddMedia";
 import Movies from "./pages/Movies"
 import TVShows from "./pages/TVShows";
+import Stats from "./pages/Stats";
 import "./App.css";
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-media" element={<AddMedia />} />
-          <Route path="/movies" element={<Movies/>} />
-          <Route path="/tvshows" element={<TVShows/>} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/tvshows" element={<TVShows />} />
+          <Route path="/stats" element={<Stats />} />
         </Routes>
       </main>
     </div>
