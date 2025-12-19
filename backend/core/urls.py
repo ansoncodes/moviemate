@@ -14,15 +14,15 @@ from .views import (
 urlpatterns = [
     #media
     path("media/", MediaListCreateView.as_view(), name="media-list-create"),
-    path("media/<int:id>/", MediaDetailView.as_view(), name="media-detail"),
+    path("media/<int:pk>/", MediaDetailView.as_view(), name="media-detail"),
 
     #genres
     path("genres/", GenreListCreateView.as_view(), name="genre-list-create"),
-    path("genres/<int:id>/", GenreDetailView.as_view(), name="genre-detail"),
+    path("genres/<int:pk>/", GenreDetailView.as_view(), name="genre-detail"),
 
     #seasons
     path("seasons/", SeasonListCreateView.as_view(), name="season-list-create"),
-    path("seasons/<int:id>/", SeasonDetailView.as_view(), name="season-detail"),
+    path("seasons/<int:pk>/", SeasonDetailView.as_view(), name="season-detail"),
 
     #season progress
     path("seasons/<int:season_id>/progress/", SeasonProgressDetailView.as_view(), name="season-progress-detail"),
