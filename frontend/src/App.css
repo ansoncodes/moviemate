@@ -1,4 +1,6 @@
-.app-layout {
-  display: flex;
+.main-content {
+  margin-left: 220px; /* sidebar width */
+  padding: 24px;
+  min-height: 100vh;
+  background: #f9fafb;
 }
-
