@@ -5,7 +5,7 @@ import { FaArrowLeft, FaStar, FaCalendar, FaTv, FaUser, FaPlus, FaCheck, FaMinus
 import "./MediaDetail.css";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 const MediaDetail = () => {
