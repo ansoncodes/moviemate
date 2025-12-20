@@ -2,7 +2,7 @@
 
 MovieMate is a full-stack web application for tracking movies and TV shows across multiple platforms. It allows users to manage watchlists, track TV show progress season-wise, rate completed content, and view personalized viewing statistics.
 
-##Demo Video
+## Demo Video
 *Click the thumbnail below to watch the full demo*
 
 [![MovieMate Demo](https://img.youtube.com/vi/zI7gaiIxuKY/maxresdefault.jpg)](https://www.youtube.com/watch?v=zI7gaiIxuKY)
@@ -18,7 +18,7 @@ The documentation includes:
 - Feature implementation details
 - Technology stack rationale
 
-##Features
+## Features
 
 - Add movies and TV shows with metadata (title, platform, genres, status)
 - Track TV shows with season-wise episode progress
@@ -28,7 +28,7 @@ The documentation includes:
 - Filter media by status (watchlist, watching, completed)
 - Dashboard analytics for viewing habits
 
-##Setup Steps
+## Setup Steps
 
 ### Prerequisites
 - Python 3.10+
@@ -80,13 +80,13 @@ npm run dev
 
 Frontend runs at: http://localhost:5173
 
-##Live Links
+## Live Links
 
 - **GitHub Repository:** https://github.com/ansoncodes/moviemate
 - **Live Application:** https://moviemate-front.vercel.app/dashboard
 - **Project Documentation:** [PDF](https://github.com/ansoncodes/moviemate-demo/blob/main/MovieMateDocumentation.pdf)
 
-##Author
+## Author
 
 **M A Anson**  
 Full Stack Developer (Django · React)
