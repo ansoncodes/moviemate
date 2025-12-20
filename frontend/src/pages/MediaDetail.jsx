@@ -22,6 +22,10 @@ const MediaDetail = () => {
   const [episodeChanges, setEpisodeChanges] = useState({});
   const [savingProgress, setSavingProgress] = useState({});
   const [error, setError] = useState("");
+  
+  // FIXED: Separate state for custom platform input visibility and value
+  const [platformSelection, setPlatformSelection] = useState("");
+  const [customPlatform, setCustomPlatform] = useState("");
 
   const [formData, setFormData] = useState({
     title: "", director: "", platform: "", status: "", rating: "", review: "", genre_ids: [],
@@ -47,6 +51,21 @@ const MediaDetail = () => {
           genre_ids: data.genres.map((g) => g.id),
         });
         
+        // FIXED: Initialize platform selection state
+        const platforms = ["Netflix", "Prime Video", "Disney+", "HBO Max", "Apple TV+", "Hulu", "Paramount+", "Peacock", "YouTube", "Crunchyroll"];
+        if (data.platform) {
+          if (platforms.includes(data.platform)) {
+            setPlatformSelection(data.platform);
+            setCustomPlatform("");
+          } else {
+            setPlatformSelection("Other");
+            setCustomPlatform(data.platform);
+          }
+        } else {
+          setPlatformSelection("");
+          setCustomPlatform("");
+        }
+        
         if (data.tv_details?.seasons) {
           const initialChanges = {};
           data.tv_details.seasons.forEach(season => {
@@ -68,7 +87,7 @@ const MediaDetail = () => {
         processMediaData(mediaData);
       }
     } catch {
-      //failed to load
+      // failed to load
     } finally {
       setLoading(false);
     }
@@ -88,12 +107,40 @@ const MediaDetail = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === "status") {
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: value,
+        rating: value !== "completed" ? "" : prev.rating
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleGenreChange = (e) => {
-    const selectedIds = Array.from(e.target.selectedOptions, option => parseInt(option.value));
-    setFormData(prev => ({ ...prev, genre_ids: selectedIds }));
+  // FIXED: Handle platform selection change
+  const handlePlatformSelectChange = (e) => {
+    const { value } = e.target;
+    setPlatformSelection(value);
+    
+    if (value === "Other") {
+      // Keep the custom platform value if it exists, otherwise clear
+      setFormData(prev => ({ 
+        ...prev, 
+        platform: customPlatform || "" 
+      }));
+    } else {
+      setCustomPlatform("");
+      setFormData(prev => ({ ...prev, platform: value }));
+    }
+  };
+
+  // FIXED: Handle custom platform input change
+  const handleCustomPlatformChange = (e) => {
+    const { value } = e.target;
+    setCustomPlatform(value);
+    setFormData(prev => ({ ...prev, platform: value }));
   };
 
   const handleUpdate = async (e) => {
@@ -213,6 +260,22 @@ const MediaDetail = () => {
 
   const calculateProgress = (watched, total) => total > 0 ? (watched / total) * 100 : 0;
 
+  // FIXED: Reset platform states when cancelling edit
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    // Reset platform states to current media values
+    const platforms = ["Netflix", "Prime Video", "Disney+", "HBO Max", "Apple TV+", "Hulu", "Paramount+", "Peacock", "YouTube", "Crunchyroll"];
+    if (media.platform) {
+      if (platforms.includes(media.platform)) {
+        setPlatformSelection(media.platform);
+        setCustomPlatform("");
+      } else {
+        setPlatformSelection("Other");
+        setCustomPlatform(media.platform);
+      }
+    }
+  };
+
   if (loading) return <p className="loading">Loading...</p>;
   if (!media) return <p className="error">Media not found</p>;
 
@@ -220,6 +283,8 @@ const MediaDetail = () => {
   const isTVShow = media.media_type === "tv_show";
   const totalWatched = isTVShow ? media.tv_details?.seasons?.reduce((sum, s) => sum + (s.episodes_watched || 0), 0) || 0 : 0;
   const totalEpisodes = isTVShow ? media.tv_details?.total_episodes || 0 : 0;
+
+  const platforms = ["Netflix", "Prime Video", "Disney+", "HBO Max", "Apple TV+", "Hulu", "Paramount+", "Peacock", "YouTube", "Crunchyroll"];
 
   return (
     <div className="media-detail-page">
@@ -260,6 +325,7 @@ const MediaDetail = () => {
               <div className="stat-card"><div className="stat-label">Progress</div><div className="stat-value">{totalEpisodes > 0 ? `${Math.round((totalWatched / totalEpisodes) * 100)}%` : "0%"}</div></div>
             </div>
           )}
+
           {media.ai_review_summary && (
             <div className="ai-summary-section">
               <div className="ai-summary-header">
@@ -353,17 +419,139 @@ const MediaDetail = () => {
           <h2>Edit {isMovie ? "Movie" : "TV Show"}</h2>
           <form onSubmit={handleUpdate}>
             <div className="form-grid">
-              <div className="form-group"><label>Title *</label><input type="text" name="title" value={formData.title} onChange={handleInputChange} required /></div>
-              <div className="form-group"><label>Director</label><input type="text" name="director" value={formData.director} onChange={handleInputChange} /></div>
-              <div className="form-group"><label>Platform</label><input type="text" name="platform" value={formData.platform} onChange={handleInputChange} /></div>
-              <div className="form-group"><label>Status *</label><select name="status" value={formData.status} onChange={handleInputChange} required><option value="watchlist">Watchlist</option><option value="watching">Watching</option><option value="completed">Completed</option></select></div>
-              <div className="form-group"><label>Rating (1-5)</label><input type="number" name="rating" value={formData.rating} onChange={handleInputChange} min="1" max="5" step="0.1" disabled={formData.status !== "completed"} />{formData.status !== "completed" && <small className="form-hint">Complete the {isMovie ? "movie" : "show"} to add a rating</small>}</div>
-              <div className="form-group"><label>Genres (Hold Ctrl/Cmd to select multiple)</label><select multiple value={formData.genre_ids} onChange={handleGenreChange} style={{ minHeight: "100px" }}>{genres.map((genre) => <option key={genre.id} value={genre.id}>{genre.name}</option>)}</select></div>
-              <div className="form-group form-row-full"><label>Review</label><textarea name="review" value={formData.review} onChange={handleInputChange} placeholder="Write your review..." /></div>
+              <div className="form-group full-width">
+                <label>Title *</label>
+                <input 
+                  type="text" 
+                  name="title" 
+                  value={formData.title} 
+                  onChange={handleInputChange} 
+                  required 
+                  placeholder="Enter title"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Director</label>
+                <input 
+                  type="text" 
+                  name="director" 
+                  value={formData.director} 
+                  onChange={handleInputChange} 
+                  placeholder="Enter director name"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Platform</label>
+                <select 
+                  name="platformSelect" 
+                  value={platformSelection}
+                  onChange={handlePlatformSelectChange}
+                >
+                  <option value="">Select platform</option>
+                  {platforms.map(p => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                  <option value="Other">Other</option>
+                </select>
+                {platformSelection === "Other" && (
+                  <input 
+                    type="text" 
+                    name="customPlatform" 
+                    value={customPlatform} 
+                    onChange={handleCustomPlatformChange} 
+                    placeholder="Enter custom platform"
+                    style={{ marginTop: "0.5rem" }}
+                  />
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>Status *</label>
+                <select 
+                  name="status" 
+                  value={formData.status} 
+                  onChange={handleInputChange} 
+                  required
+                >
+                  <option value="watchlist">Watchlist</option>
+                  <option value="watching">Watching</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              <div className="form-group full-width">
+                <label>Genres</label>
+                <div className="genre-chips">
+                  {genres.map((genre) => (
+                    <button
+                      key={genre.id}
+                      type="button"
+                      className={`genre-chip ${formData.genre_ids.includes(genre.id) ? 'selected' : ''}`}
+                      onClick={() => {
+                        const newGenreIds = formData.genre_ids.includes(genre.id)
+                          ? formData.genre_ids.filter(id => id !== genre.id)
+                          : [...formData.genre_ids, genre.id];
+                        setFormData(prev => ({ ...prev, genre_ids: newGenreIds }));
+                      }}
+                    >
+                      {genre.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group full-width">
+                <label>
+                  Rating (1-5)
+                  {formData.status !== "completed" && (
+                    <span className="rating-note"> (Available only when status is "Completed")</span>
+                  )}
+                </label>
+                {formData.status === "completed" ? (
+                  <div className="star-rating">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <FaStar
+                        key={star}
+                        className={`star ${star <= (formData.rating || 0) ? 'active' : ''}`}
+                        onClick={() => setFormData(prev => ({ ...prev, rating: star.toString() }))}
+                      />
+                    ))}
+                    {formData.rating > 0 && (
+                      <span className="rating-value">{formData.rating}</span>
+                    )}
+                  </div>
+                ) : (
+                  <input 
+                    type="number" 
+                    name="rating" 
+                    value={formData.rating} 
+                    onChange={handleInputChange} 
+                    min="1" 
+                    max="5" 
+                    step="0.1" 
+                    disabled 
+                    placeholder="Complete to rate"
+                  />
+                )}
+              </div>
+
+              <div className="form-group full-width">
+                <label>Review</label>
+                <textarea 
+                  name="review" 
+                  value={formData.review} 
+                  onChange={handleInputChange} 
+                  placeholder="Write your review..." 
+                  rows="5"
+                />
+              </div>
             </div>
+
             <div className="form-actions">
               <button type="submit" className="btn-primary">Save Changes</button>
-              <button type="button" className="btn-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
+              <button type="button" className="btn-secondary" onClick={handleCancelEdit}>Cancel</button>
             </div>
           </form>
         </div>
