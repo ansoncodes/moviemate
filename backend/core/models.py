@@ -2,23 +2,29 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from core.utils.gemini import generate_ai_summary
+
+
+
+from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
+from core.utils.gemini import generate_ai_summary
 
 
 class Media(models.Model):
+    #media types
     movie = "movie"
     tv_show = "tv_show"
-
-    genres = models.ManyToManyField(
-        "Genre",
-        through="MediaGenre",
-        related_name="media"
-    )
 
     media_type_choices = [
         (movie, "Movie"),
         (tv_show, "TV Show"),
     ]
-    
+
+    #watch status
     watching = "watching"
     completed = "completed"
     watchlist = "watchlist"
@@ -27,35 +33,71 @@ class Media(models.Model):
         (watching, "Watching"),
         (completed, "Completed"),
         (watchlist, "Watchlist"),
-        ]
-    
-    title = models.CharField(max_length = 200)
+    ]
+
+    #relations
+    genres = models.ManyToManyField(
+        "Genre",
+        through="MediaGenre",
+        related_name="media"
+    )
+
+    #core fields
+    title = models.CharField(max_length=200)
     media_type = models.CharField(max_length=10, choices=media_type_choices)
     director = models.CharField(max_length=200, null=True, blank=True)
     platform = models.CharField(max_length=100, null=True, blank=True)
 
-    status = models.CharField(max_length=15, choices = status_choices, default = watchlist)
-    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True, validators=[MinValueValidator(1.0), MaxValueValidator(5.0)])
+    status = models.CharField(
+        max_length=15,
+        choices=status_choices,
+        default=watchlist
+    )
+
+    rating = models.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1.0), MaxValueValidator(5.0)]
+    )
+
     review = models.TextField(null=True, blank=True)
     ai_review_summary = models.TextField(null=True, blank=True)
 
-    completed_at = models.DateTimeField(null = True, blank= True)
+    completed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now = True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
-        indexes=[
+        indexes = [
             models.Index(fields=["status"]),
-            models.Index(fields=["platform"])
+            models.Index(fields=["platform"]),
         ]
 
     def clean(self):
-        #cant rate a show/movie that you havent completed
+        #rating is allowed only after completion
         if self.rating is not None and self.status != self.completed:
-            raise ValidationError("you can only rate a show/movie after completing it")
+            raise ValidationError(
+                "you can only rate a movie or TV show after completing it."
+            )
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        #set completion time
+
+        #generate ai summary only once
+        if self.review and not self.ai_review_summary:
+            self.ai_review_summary = generate_ai_summary(
+                title=self.title,
+                media_type=self.media_type,
+                platform=self.platform,
+                director=self.director,
+                status=self.status,
+                rating=self.rating,
+                review=self.review,
+            )
+
+        #handle completion timestamp
         if self.status == self.completed and self.completed_at is None:
             self.completed_at = timezone.now()
         elif self.status != self.completed:
