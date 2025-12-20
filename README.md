@@ -1,17 +1,17 @@
-# 🎬 MovieMate
+# MovieMate
 
 A full-stack movie and TV show tracking application built with Django REST Framework and React. Track your watchlist, rate content, and manage your viewing history.
 
-## ✨ Features
+##Features
 
-- 📝 Add movies and TV shows with detailed information
-- 🎭 Track seasons and episodes for TV shows
-- ⭐ Rate and review your watched content
-- 📊 View statistics and insights about your viewing habits
-- 🔍 Filter and search through your collection
-- 📱 Fully responsive design
+- Add movies and TV shows with detailed information
+- Track seasons and episodes for TV shows
+- Rate and review your watched content
+- View statistics and insights about your viewing habits
+- Filter and search through your collection
+- Fully responsive design
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend:**
 - React
@@ -25,15 +25,14 @@ A full-stack movie and TV show tracking application built with Django REST Frame
 - django-cors-headers
 - django-filters
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 - Python 3.8+
 - Node.js 16+
-- PostgreSQL
 - Git
 
-## 🚀 Getting Started
+##Getting Started
 
 ### Backend Setup
 
