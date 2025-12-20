@@ -196,3 +196,34 @@ class TVShowDetailsCreateView(generics.CreateAPIView):
                 {"error": str(e)}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from .models import Genre
+
+class SeedGenresView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        genres = [
+            "Action",
+            "Drama",
+            "Comedy",
+            "Thriller",
+            "Sci-Fi",
+            "Romance",
+            "Adventure",
+            "Fantasy",
+            "Horror",
+        ]
+
+        created = []
+        for name in genres:
+            obj, _ = Genre.objects.get_or_create(name=name)
+            created.append(obj.name)
+
+        return Response({
+            "message": "Genres seeded successfully",
+            "genres": created
+        })
