@@ -100,6 +100,33 @@ class SeasonReadSerializer(serializers.ModelSerializer):
 
 
 
+class TVShowDetailsCreateSerializer(serializers.ModelSerializer):
+    media = serializers.IntegerField(write_only=True)
+    
+    class Meta:
+        model = TVShowDetails
+        fields = ["id", "media"]
+        read_only_fields = ["id"]
+    
+    def validate_media(self, value):
+        try:
+            media = Media.objects.get(id=value)
+        except Media.DoesNotExist:
+            raise serializers.ValidationError("media not found")
+        
+        if media.media_type != Media.tv_show:
+            raise serializers.ValidationError("can only create TV details for TV shows")
+        
+        if hasattr(media, 'tv_details'):
+            raise serializers.ValidationError("TV details already exist for this media")
+        
+        return value
+    
+    def create(self, validated_data):
+        media_id = validated_data.get('media')
+        media = Media.objects.get(id=media_id)
+        return TVShowDetails.objects.create(media=media)
+
 class TVShowDetailSerializer(serializers.ModelSerializer):
     seasons = SeasonReadSerializer(many=True)
 
@@ -178,3 +205,4 @@ class SeasonUpdateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("season number already exists")
         
         return data
+    

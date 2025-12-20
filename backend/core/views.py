@@ -1,8 +1,9 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters, status
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Media, Genre, Season, SeasonProgress
+from django.core.exceptions import ValidationError
+from .models import Media, Genre, Season, SeasonProgress, TVShowDetails
 from .serializers import(
     MediaCreateSerializer,
     MediaListSerializer,
@@ -12,7 +13,9 @@ from .serializers import(
     SeasonCreateSerializer,
     SeasonUpdateSerializer,
     SeasonReadSerializer,
-    SeasonProgressSerializer)
+    SeasonProgressSerializer,
+    TVShowDetailSerializer,
+    TVShowDetailsCreateSerializer)
 
 
 class MediaListCreateView(generics.ListCreateAPIView):
@@ -145,3 +148,51 @@ class MediaDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return MediaUpdateSerializer
         return MediaDetailSerializer
+
+
+class TVShowDetailsCreateView(generics.CreateAPIView):
+    queryset = TVShowDetails.objects.all()
+    serializer_class = TVShowDetailsCreateSerializer
+    
+    def create(self, request, *args, **kwargs):
+        media_id = request.data.get('media')
+        
+        if not media_id:
+            return Response(
+                {"error": "media id is required"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            media = Media.objects.get(id=media_id)
+        except Media.DoesNotExist:
+            return Response(
+                {"error": "Media not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if media.media_type != Media.tv_show:
+            return Response(
+                {"error": "Can only create TV details for TV shows"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        #check if TV details already exist. if so, return them
+        if hasattr(media, 'tv_details'):
+            return Response(
+                {"id": media.tv_details.id, "media": media.id}, 
+                status=status.HTTP_200_OK
+            )
+        
+        #create new TV details
+        try:
+            tv_details = TVShowDetails.objects.create(media=media)
+            return Response(
+                {"id": tv_details.id, "media": media.id}, 
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
