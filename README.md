@@ -202,23 +202,6 @@ moviemate-front/
 └── .env
 ```
 
-## 🔧 API Endpoints
-
-### Movies/Shows
-- `GET /api/movies/` - List all content
-- `POST /api/movies/` - Create new content
-- `GET /api/movies/{id}/` - Get specific content
-- `PUT /api/movies/{id}/` - Update content
-- `DELETE /api/movies/{id}/` - Delete content
-
-### Statistics
-- `GET /api/stats/` - Get viewing statistics
-
-### Filters
-- `GET /api/movies/?status=watching` - Filter by status
-- `GET /api/movies/?content_type=movie` - Filter by type
-- `GET /api/movies/?genre=action` - Filter by genre
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -227,9 +210,6 @@ moviemate-front/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 👨‍💻 Author
 
