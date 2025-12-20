@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaFilm, FaTv, FaStar, FaClock, FaCheck, FaList } from "react-icons/fa";
 import StatsCard from "../components/StatsCard";
-import "./Stats.css";
+import "./stats.css";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
