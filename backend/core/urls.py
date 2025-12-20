@@ -9,6 +9,7 @@ from .views import (
     SeasonProgressUpdateView,
     SeasonProgressDetailView,
     MediaStatsView,
+    TVShowDetailsCreateView
 )
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
 
     #stats
     path("stats/", MediaStatsView.as_view(), name="media-stats"),
+    path("tv-details/", TVShowDetailsCreateView.as_view(), name="tv-details-create"),
 ]
