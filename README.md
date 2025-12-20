@@ -1,227 +1,88 @@
 # MovieMate
 
-A full-stack movie and TV show tracking application built with Django REST Framework and React. Track your watchlist, rate content, and manage your viewing history.
+MovieMate is a full-stack web application for tracking movies and TV shows across multiple platforms. It allows users to manage watchlists, track TV show progress season-wise, rate completed content, and view personalized viewing statistics.
 
-##Features
+## Demo Video - *Click the thumbnail below to watch the full demo*
 
-- Add movies and TV shows with detailed information
-- Track seasons and episodes for TV shows
-- Rate and review your watched content
-- View statistics and insights about your viewing habits
-- Filter and search through your collection
-- Fully responsive design
+[![MovieMate Demo](https://img.youtube.com/vi/zI7gaiIxuKY/maxresdefault.jpg)](https://www.youtube.com/watch?v=zI7gaiIxuKY)
 
-## Tech Stack
 
-**Frontend:**
-- React
-- Axios for API calls
-- CSS3 for styling
 
-**Backend:**
-- Django 6.0
-- Django REST Framework
-- PostgreSQL
-- django-cors-headers
-- django-filters
+## Features
 
-## Prerequisites
+- Add movies and TV shows with metadata (title, platform, genres, status)
+- Track TV shows with season-wise episode progress
+- Automatic completion detection when all episodes are watched
+- Rate and review completed media (rating restricted until completion)
+- AI-generated review summaries using Google Gemini
+- Filter media by status (watchlist, watching, completed)
+- Dashboard analytics for viewing habits
 
-Before you begin, ensure you have the following installed:
-- Python 3.8+
+## Setup Steps
+
+### Prerequisites
+
+- Python 3.10+
 - Node.js 16+
 - Git
 
-##Getting Started
+### Backend Setup (Django REST Framework)
 
-### Backend Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ansoncodes/moviemate-backend.git
-   cd moviemate-backend
-   ```
-
-2. **Create a virtual environment**
-   ```bash
-   python -m venv venv
-   
-   # On Windows
-   venv\Scripts\activate
-   
-   # On macOS/Linux
-   source venv/bin/activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Create a `.env` file in the project root**
-   ```env
-   SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   ALLOWED_HOSTS=localhost,127.0.0.1
-   DATABASE_URL=postgresql://username:password@localhost:5432/moviemate_db
-   FRONTEND_URL=http://localhost:5173
-   ```
-
-5. **Set up the database**
-   ```bash
-   # Create PostgreSQL database
-   psql -U postgres
-   CREATE DATABASE moviemate_db;
-   \q
-   
-   # Run migrations
-   python manage.py migrate
-   ```
-
-6. **Create a superuser (optional)**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Run the development server**
-   ```bash
-   python manage.py runserver
-   ```
-
-   Backend will be running at `http://localhost:8000`
-
-### Frontend Setup
-
-1. **Clone the frontend repository**
-   ```bash
-   git clone https://github.com/ansoncodes/moviemate-front.git
-   cd moviemate-front
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Create a `.env` file in the project root**
-   ```env
-   VITE_API_URL=http://localhost:8000
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-   Frontend will be running at `http://localhost:5173`
-
-## 🌐 Deployment
-
-### Backend Deployment (Render)
-
-1. **Create a new Web Service on Render**
-   - Connect your GitHub repository
-   - Select "Python" as the environment
-
-2. **Configure Build & Start Commands**
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn moviemate.wsgi:application`
-
-3. **Set Environment Variables**
-   ```
-   SECRET_KEY=your-production-secret-key
-   DEBUG=False
-   ALLOWED_HOSTS=your-app.onrender.com
-   DATABASE_URL=your-postgres-connection-string
-   FRONTEND_URL=https://your-frontend.vercel.app
-   ```
-
-4. **Database**
-   - Create a PostgreSQL database on Render
-   - Copy the connection string to `DATABASE_URL`
-
-### Frontend Deployment (Vercel)
-
-1. **Import your repository to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Import your frontend repository
-
-2. **Configure Environment Variables**
-   ```
-   VITE_API_URL=https://your-backend.onrender.com
-   ```
-
-3. **Add `vercel.json` to handle SPA routing**
-   ```json
-   {
-     "rewrites": [
-       {
-         "source": "/(.*)",
-         "destination": "/index.html"
-       }
-     ]
-   }
-   ```
-
-4. **Deploy**
-   - Vercel will automatically build and deploy your app
-   - Get your production URL
-
-## 📁 Project Structure
-
-### Backend
-```
-moviemate-backend/
-├── moviemate/          # Main project settings
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── core/               # Main app
-│   ├── models.py       # Database models
-│   ├── serializers.py  # DRF serializers
-│   ├── views.py        # API views
-│   └── urls.py         # App URLs
-├── manage.py
-├── requirements.txt
-└── .env
+```bash
+git clone https://github.com/ansoncodes/moviemate.git
+cd moviemate/backend
+python -m venv venv
+venv\Scripts\activate   # Windows
+pip install -r requirements.txt
 ```
 
-### Frontend
+Create a `.env` file:
+
 ```
-moviemate-front/
-├── src/
-│   ├── components/     # React components
-│   ├── services/       # API service files
-│   ├── App.jsx         # Main app component
-│   └── main.jsx        # Entry point
-├── public/
-├── index.html
-├── package.json
-├── vercel.json
-└── .env
+SECRET_KEY=your-secret-key
+DEBUG=True
+ALLOWED_HOSTS=allowed hosts
+DATABASE_URL=database url
+GEMINI_API_KEY=api key
+FRONTEND_URL=http://localhost:5173
 ```
 
-## 🤝 Contributing
+Run migrations and start server:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```bash
+python manage.py migrate
+python manage.py runserver
+```
 
+Backend runs at: http://localhost:8000
 
-## 👨‍💻 Author
+### Frontend Setup (React)
 
-**Anson**
-- GitHub: [@ansoncodes](https://github.com/ansoncodes)
+```bash
+cd ../frontend
+npm install
+```
 
-## 🙏 Acknowledgments
+Create `.env`:
 
-- Django REST Framework documentation
-- React documentation
-- Vercel & Render for hosting
+```
+VITE_API_URL=http://localhost:8000
+```
 
----
+Start frontend:
 
-⭐ Star this repo if you find it helpful!
+```bash
+npm run dev
+```
+
+Frontend runs at: http://localhost:5173
+
+## Live Links
+
+- GitHub Repository: https://github.com/ansoncodes/moviemate
+- Live Application: https://moviemate-front.vercel.app/dashboard
+
+## Author
+
+M A Anson  
+Full Stack Developer (Django · React)
