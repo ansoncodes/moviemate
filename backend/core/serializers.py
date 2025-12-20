@@ -49,7 +49,7 @@ class MediaListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Media
-        fields = ["id", "title", "media_type", "platform", "status", "rating", "genres"]
+        fields = ["id", "title", "media_type", "platform", "status","ai_review_summary", "rating", "genres"]
 
 class SeasonCreateSerializer(serializers.ModelSerializer):
     class Meta:
