@@ -676,3 +676,38 @@
   gap: 12px;
   justify-content: flex-end;
 }
+
+.ai-summary-section {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;  
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+
+.ai-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ai-summary-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.ai-icon {
+  color: #667eea;
+  font-size: 1.2rem;
+}
+
+.ai-summary-text {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}

@@ -19,7 +19,7 @@ You are generating a short review summary for a personal media tracker app.
 Rules:
 - Use ONLY the information provided.
 - Do NOT add plot details or external knowledge.
-- Keep it neutral and factual.
+- Keep it friendly, concise, and grounded in the user's notes.
 - 2–3 sentences max.
 
 Media Details:

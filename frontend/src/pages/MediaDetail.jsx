@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaArrowLeft, FaStar, FaCalendar, FaTv, FaUser, FaPlus, FaCheck, FaMinus } from "react-icons/fa";
+import { FaArrowLeft, FaStar, FaCalendar, FaTv, FaUser, FaPlus, FaCheck, FaMinus, FaRobot } from "react-icons/fa";
 import "./MediaDetail.css";
 
 const api = axios.create({
@@ -258,6 +258,15 @@ const MediaDetail = () => {
               <div className="stat-card"><div className="stat-label">Total Episodes</div><div className="stat-value">{totalEpisodes}</div></div>
               <div className="stat-card"><div className="stat-label">Episodes Watched</div><div className="stat-value">{totalWatched}</div></div>
               <div className="stat-card"><div className="stat-label">Progress</div><div className="stat-value">{totalEpisodes > 0 ? `${Math.round((totalWatched / totalEpisodes) * 100)}%` : "0%"}</div></div>
+            </div>
+          )}
+          {media.ai_review_summary && (
+            <div className="ai-summary-section">
+              <div className="ai-summary-header">
+                <FaRobot className="ai-icon" />
+                <h2>AI Summary</h2>
+              </div>
+              <p className="ai-summary-text">{media.ai_review_summary}</p>
             </div>
           )}
 
