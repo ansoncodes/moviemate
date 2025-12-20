@@ -141,7 +141,7 @@ class MediaDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Media
-        fields = ["id", "title", "media_type", "director", "platform", "status", "rating", "review", "completed_at", "genres", "tv_details",]
+        fields = ["id", "title", "media_type", "director", "platform", "status", "rating", "review","ai_review_summary", "completed_at", "genres", "tv_details",]
 
 class MediaUpdateSerializer(serializers.ModelSerializer):
     genre_ids = serializers.ListField(
