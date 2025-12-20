@@ -4,7 +4,7 @@
   margin: 0 auto;
 }
 
-/* Header */
+/*header*/
 .add-media-header {
   display: flex;
   justify-content: space-between;
@@ -27,7 +27,7 @@
   margin: 4px 0 0 0;
 }
 
-/* Buttons */
+/*buttons*/
 .btn-primary,
 .btn-secondary,
 .btn-success,
@@ -83,7 +83,7 @@
   background: #dc2626;
 }
 
-/* Form */
+/*form*/
 .add-media-form {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -141,7 +141,7 @@
   color: #9ca3af;
 }
 
-/* Genre chips */
+/*genre chips*/
 .genre-chips {
   display: flex;
   flex-wrap: wrap;
@@ -171,7 +171,7 @@
   border-color: #2563eb;
 }
 
-/* Star rating */
+/*star rating*/
 .star-rating {
   display: flex;
   align-items: center;
@@ -205,7 +205,7 @@
   margin-left: 4px;
 }
 
-/* Seasons section */
+/*seasons section*/
 .seasons-section {
   margin-top: 10px;
 }
@@ -275,7 +275,7 @@
   margin-top: 0.5rem;
 }
 
-/* Error */
+/*error*/
 .form-error {
   background: #fef2f2;
   color: #dc2626;
@@ -286,7 +286,7 @@
   margin-bottom: 16px;
 }
 
-/* Actions */
+/*actions*/
 .form-actions {
   display: flex;
   justify-content: flex-end;
