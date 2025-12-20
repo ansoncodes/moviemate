@@ -2,13 +2,23 @@
 
 MovieMate is a full-stack web application for tracking movies and TV shows across multiple platforms. It allows users to manage watchlists, track TV show progress season-wise, rate completed content, and view personalized viewing statistics.
 
-## Demo Video - *Click the thumbnail below to watch the full demo*
+##Demo Video
+*Click the thumbnail below to watch the full demo*
 
 [![MovieMate Demo](https://img.youtube.com/vi/zI7gaiIxuKY/maxresdefault.jpg)](https://www.youtube.com/watch?v=zI7gaiIxuKY)
 
+## Documentation
 
+**Complete Project Documentation:** [View PDF](https://github.com/ansoncodes/moviemate-demo/blob/main/MovieMateDocumentation.pdf)
 
-## Features
+The documentation includes:
+- Detailed architecture overview
+- Database schema and models
+- API endpoint specifications
+- Feature implementation details
+- Technology stack rationale
+
+##Features
 
 - Add movies and TV shows with metadata (title, platform, genres, status)
 - Track TV shows with season-wise episode progress
@@ -18,16 +28,14 @@ MovieMate is a full-stack web application for tracking movies and TV shows acros
 - Filter media by status (watchlist, watching, completed)
 - Dashboard analytics for viewing habits
 
-## Setup Steps
+##Setup Steps
 
 ### Prerequisites
-
 - Python 3.10+
 - Node.js 16+
 - Git
 
 ### Backend Setup (Django REST Framework)
-
 ```bash
 git clone https://github.com/ansoncodes/moviemate.git
 cd moviemate/backend
@@ -37,7 +45,6 @@ pip install -r requirements.txt
 ```
 
 Create a `.env` file:
-
 ```
 SECRET_KEY=your-secret-key
 DEBUG=True
@@ -48,7 +55,6 @@ FRONTEND_URL=http://localhost:5173
 ```
 
 Run migrations and start server:
-
 ```bash
 python manage.py migrate
 python manage.py runserver
@@ -57,32 +63,34 @@ python manage.py runserver
 Backend runs at: http://localhost:8000
 
 ### Frontend Setup (React)
-
 ```bash
 cd ../frontend
 npm install
 ```
 
 Create `.env`:
-
 ```
 VITE_API_URL=http://localhost:8000
 ```
 
 Start frontend:
-
 ```bash
 npm run dev
 ```
 
 Frontend runs at: http://localhost:5173
 
-## Live Links
+##Live Links
 
-- GitHub Repository: https://github.com/ansoncodes/moviemate
-- Live Application: https://moviemate-front.vercel.app/dashboard
+- **GitHub Repository:** https://github.com/ansoncodes/moviemate
+- **Live Application:** https://moviemate-front.vercel.app/dashboard
+- **Project Documentation:** [PDF](https://github.com/ansoncodes/moviemate-demo/blob/main/MovieMateDocumentation.pdf)
 
-## Author
+##Author
 
-M A Anson  
+**M A Anson**  
 Full Stack Developer (Django · React)
+
+---
+
+*For detailed technical documentation, architecture diagrams, and API specifications, please refer to the [complete project documentation](https://github.com/ansoncodes/moviemate-demo/blob/main/MovieMateDocumentation.pdf).*
